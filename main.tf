@@ -85,5 +85,5 @@ resource "aws_instance" "web_server" {
     systemctl enable nginx
   EOF
 
-  tags = { Name = "project4-web" }
+  tags = { Name = "project4-web1" }
 }
