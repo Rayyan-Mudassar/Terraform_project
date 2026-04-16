@@ -159,4 +159,4 @@ Since infrastructure is version-controlled:
 ## Author
 
 **Rayyan Mudassar** — Self-taught Cloud & Security Engineer  
-[LinkedIn](https://www.linkedin.com/rayyan-mudassar/)
+[LinkedIn](https://www.linkedin.com/in/rayyan-mudassar/)
