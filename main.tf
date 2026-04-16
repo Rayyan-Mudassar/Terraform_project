@@ -1,17 +1,17 @@
 provider "aws" {
-   region = "us-east-1"
+  region = var.region
 }
 
-resource "aws_vpc" "main" {
+resource "aws_vpc" "server_vpc" {
   cidr_block           = "10.0.0.0/16"
   enable_dns_hostnames = true
   enable_dns_support   = true
 
-  tags = { Name = "project4-vpc1" }
+  tags = { Name = "project4-vpc" }
 }
 
 resource "aws_subnet" "public" {
-  vpc_id                  = aws_vpc.main.id
+  vpc_id                  = aws_vpc.server_vpc.id
   cidr_block              = "10.0.1.0/24"
   availability_zone       = "us-east-1a"
   map_public_ip_on_launch = true
@@ -20,11 +20,11 @@ resource "aws_subnet" "public" {
 }
 
 resource "aws_internet_gateway" "igw" {
-  vpc_id = aws_vpc.main.id
+  vpc_id = aws_vpc.server_vpc.id
 }
 
 resource "aws_route_table" "public" {
-  vpc_id = aws_vpc.main.id
+  vpc_id = aws_vpc.server_vpc.id
 
   route {
     cidr_block = "0.0.0.0/0"
@@ -39,7 +39,7 @@ resource "aws_route_table_association" "public" {
 
 resource "aws_security_group" "ec2_sg" {
   name   = "project4-sg"
-  vpc_id = aws_vpc.main.id
+  vpc_id = aws_vpc.server_vpc.id
 
   ingress {
     from_port   = 80
@@ -59,7 +59,7 @@ resource "aws_security_group" "ec2_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["39.61.45.162/32"]
+    cidr_blocks = ["154.208.54.222/32"] 
   }
 
   egress {
@@ -70,8 +70,8 @@ resource "aws_security_group" "ec2_sg" {
   }
 }
 
-resource "aws_instance" "web_server" {
-  ami                    = "ami-0c02fb55956c7d316"
+resource "aws_instance" "web-server" {
+  ami                    = "ami-0c101f26f147fa7fd"
   instance_type          = var.instance_type
   subnet_id              = aws_subnet.public.id
   vpc_security_group_ids = [aws_security_group.ec2_sg.id]
@@ -85,5 +85,5 @@ resource "aws_instance" "web_server" {
     systemctl enable nginx
   EOF
 
-  tags = { Name = "project4-web1" }
+  tags = { Name = "project4-web" }
 }
