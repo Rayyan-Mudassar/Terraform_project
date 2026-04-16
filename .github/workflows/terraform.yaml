@@ -1,0 +1,38 @@
+name: Terraform Pipeline
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+
+  terraform-plan:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: hashicorp/setup-terraform@v2
+
+      - run: terraform init
+      - run: terraform validate
+      - run: terraform plan
+
+  terraform-apply:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: hashicorp/setup-terraform@v2
+
+      - run: terraform init
+      - run: terraform apply -auto-approve
+        run: terraform validate
+
+      - name: Terraform Plan
+        run: terraform plan
