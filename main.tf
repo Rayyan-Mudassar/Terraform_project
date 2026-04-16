@@ -7,7 +7,7 @@ resource "aws_vpc" "main" {
   enable_dns_hostnames = true
   enable_dns_support   = true
 
-  tags = { Name = "project4-vpc" }
+  tags = { Name = "project4-vpc1" }
 }
 
 resource "aws_subnet" "public" {
